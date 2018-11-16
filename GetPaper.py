@@ -4,6 +4,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from selenium.webdriver.support.ui import WebDriverWait
 
+from openpyxl import load_workbook
+
 driver = webdriver.Chrome('C:/Users/kpark/AppData/Local/Programs/Python/chromedriver.exe')
 driver.get('http://www.riss.kr/index.do')
 
@@ -86,10 +88,8 @@ def scrap_data():
         except Exception as e:
             print("Not on its format2") 
 
-        print(paper_title)
-        print(paper_author)
-        print(paper_association)
-        print(paper_year)
+        
+
 
 def search_list_by_clicking():
     #전체 페이퍼 항목들을 보여줌

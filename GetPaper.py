@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 driver = webdriver.Chrome('C:/Users/kpark/AppData/Local/Programs/Python/chromedriver.exe')
 driver.get('http://www.riss.kr/index.do')
 
+#검색어는 지정주어야 함
 def search_riss():
     handler = driver.window_handles
 
@@ -62,12 +63,28 @@ def scrap_data():
             paper_year = two_tmp[1][1:-1]
         
         except Exception as e:
+            print("Not on its format1")
+
+        try:
             year_temp = driver.find_elements_by_xpath("//span[@class='etc']")[element].text
             one_tmp = year_temp.split(' ')
             print(one_tmp)
             two_tmp = one_tmp[1].split(',')
             print(two_tmp)
-            paper_year = two_tmp[1][1:-1]            
+            paper_year = two_tmp[1][1:-1]
+        except Exception as e:
+            print("Not on its format2") 
+
+        try:
+            year_temp = driver.find_elements_by_xpath("//span[@class='etc']")[element].text
+            one_tmp = year_temp.split(' ')
+            print(one_tmp)
+            two_tmp = one_tmp[4].split(',')
+            print(two_tmp)
+            paper_year = two_tmp[1][1:-1]
+
+        except Exception as e:
+            print("Not on its format2") 
 
         print(paper_title)
         print(paper_author)

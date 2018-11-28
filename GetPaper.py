@@ -43,38 +43,6 @@ def academy_riss():
     show_hundred = driver.find_element_by_xpath("//a[contains(text(), '100개씩 출력')]")
     show_hundred.click()
 
-#검색어는 지정주어야 함
-#국내학술지 대상
-def paperwork_riss():
-    handler = driver.window_handles
-
-    for i in range(0,4):
-        try:
-            driver.switch_to_window(handler[i])
-            query_input = driver.find_element_by_xpath("//input[@id='basicQuery']")
-            
-        except Exception as e:
-            print('Closing Popups...')
-            driver.close()
-
-    driver.switch_to_window(handler[0])
-
-    # Input of Keywords & Search
-    sleep(2)
-    query = "우버"
-    query_input.send_keys(query)
-    search_btn = driver.find_element_by_xpath("//input[@src='/main/images/sc_btn.gif']")
-    search_btn.click()
- 
-    # 학위논문
-    graduate_sec = driver.find_element_by_xpath("//a[contains(text(), '국내학술지논문')]")
-    graduate_sec.click()
-
-    #100개씩 보여주기
-    show_hundred = driver.find_element_by_xpath("//a[contains(text(), '100개씩 출력')]")
-    show_hundred.click()
-
-
 def scrap_academy():
     title_candidates = driver.find_elements_by_xpath("//p[@class='txt']") #전체 돌아가는 숫자
     val = 0 #저자, 소속을 위한 임시 변수
@@ -142,16 +110,56 @@ def scrap_academy():
         workbook.save("/Users/Kyungho/Desktop/PaperScraper/temp.xlsx")
 
 
+#검색어는 지정주어야 함
+#국내학술지 대상
+def paperwork_riss():
+    handler = driver.window_handles
+
+    for i in range(0,3): #팝업창 개수(n) + 1만큼 range(0,n+1)돌려줘야 함
+        try:
+            driver.switch_to_window(handler[i])
+            query_input = driver.find_element_by_xpath("//input[@id='basicQuery']")
+            
+        except Exception as e:
+            print('Closing Popups...')
+            driver.close()
+
+    driver.switch_to_window(handler[0])
+
+    driver.maximize_window()
+
+    # Input of Keywords & Search
+    sleep(2)
+    query = "우버"
+    query_input.send_keys(query)
+    search_btn = driver.find_element_by_xpath("//input[@src='/main/images/sc_btn.gif']")
+    search_btn.click()
+ 
+    # 학위논문
+    graduate_sec = driver.find_element_by_xpath("//a[contains(text(), '국내학술지논문')]")
+    graduate_sec.click()
+
+    #100개씩 보여주기
+    show_hundred = driver.find_element_by_xpath("//a[contains(text(), '100개씩 출력')]")
+    show_hundred.click()
+
+    sleep(1)
+
+
+
 def scrap_paperwork():
     
     title_candidates = driver.find_elements_by_xpath("//p[@class='txt']") #전체 돌아가는 숫자를 정의하기 위해
     url_checkpoint = driver.current_url #검색결과 화면을 체크
      
+    print(len(title_candidates))
+
     for element in range(0,len(title_candidates)):
 
         print(element)
         sleep(3)
         graduate_paper_list = driver.find_elements_by_xpath("//p[@class='txt']/a")
+
         graduate_paper_list[element].click() #for문 돌려서 바꿔주어야 함
 
         #Title
@@ -243,7 +251,7 @@ def test_excel():
 
 
 #academy_riss()
-paperwork_riss()
-
 #scrap_academy()
+
+paperwork_riss()
 scrap_paperwork()

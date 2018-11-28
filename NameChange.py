@@ -14,7 +14,6 @@ driver = webdriver.Chrome('/usr/local/bin/chromedriver')
 driver.get('https://dict.naver.com/name-to-roman/translation/?where=name')
 sleep(1)
 
-
 #row_idx = 1
 
 workbook = load_workbook("/Users/Kyungho/Desktop/PaperScraper/name.xlsx")

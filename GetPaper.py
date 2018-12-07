@@ -127,7 +127,7 @@ def paperwork_riss():
     driver.switch_to_window(handler[0])
 
     # Input of Keywords & Search
-    query = "우버"
+    query = "uber"
     query_input.send_keys(query)
     search_btn = driver.find_element_by_xpath("//input[@src='/main/images/sc_btn.gif']")
     search_btn.click()
@@ -152,41 +152,64 @@ def scrap_paperwork():
     for element in range(0,len(title_candidates)):
 
         print("New Paper!")
-        sleep(3)
-        graduate_paper_list = driver.find_elements_by_xpath("//p[@class='txt']/a")
-
-        graduate_paper_list[element].click()
+        sleep(2)
         
-        #Title
-        title_temp = driver.find_element_by_xpath("//div[@class='vTop02']")
-        paper_title = title_temp.text
+        try:
+            graduate_paper_list = driver.find_elements_by_xpath("//p[@class='txt']/a")
+            graduate_paper_list[element].click()
+            
+            #Title
+            title_temp = driver.find_element_by_xpath("//div[@class='vTop02']/p[@class='tit']")
+            paper_title = title_temp.text
 
-        #Sub infos - make as grouped body
-        info_temp = driver.find_elements_by_xpath("//p[@class='w56']")
+            #Sub infos - make as grouped body
+            info_temp = driver.find_elements_by_xpath("//p[@class='w56']")
 
-        #Author
-        paper_author = info_temp[1].text
+            #Author
+            paper_author = info_temp[1].text
 
-        #Association
-        paper_association = info_temp[4].text
+            #Association
+            paper_association = info_temp[4].text
 
-        #Year
-        list_temp = driver.find_elements_by_xpath("//ul[@class='report']/li/p")
-        paper_year = list_temp[9].text
+            #Year
+            list_temp = driver.find_elements_by_xpath("//ul[@class='report']/li/p")
+            paper_year = list_temp[9].text
 
-        #URL
-        url_temp = driver.find_element_by_xpath("//div[@class='vTop02']/p[@class='copy']/a")
-        paper_url = url_temp.text
+            #URL
+            url_temp = driver.find_element_by_xpath("//div[@class='vTop02']/p[@class='copy']/a")
+            paper_url = url_temp.text
 
-        print(paper_title)
-        print(paper_author)
-        print(paper_association)
-        print(paper_year)
-        print(paper_url)
+            print(paper_title)
+            print(paper_author)
+            print(paper_association)
+            print(paper_year)
+            print(paper_url)
 
-        driver.get(url_checkpoint)
-        sleep(1)
-    
+            driver.get(url_checkpoint)
+            sleep(1)
+
+        except Exception as e:
+            print('Minor Error has ocured.')
+
+        # Put infos on Excel
+        workbook = load_workbook("/Users/Kyungho/Desktop/PaperScraper/temp.xlsx")
+        worksheet = workbook.active
+        
+        title_idx = 1
+        author_idx = 2
+        association_idx = 3
+        year_idx = 4
+        url_idx = 5
+
+        row_idx = element + 1
+
+        worksheet.cell(row=row_idx, column=title_idx, value=paper_title)
+        worksheet.cell(row=row_idx, column=author_idx, value=paper_author)
+        worksheet.cell(row=row_idx, column=association_idx, value=paper_association)    
+        worksheet.cell(row=row_idx, column=year_idx, value=paper_year)
+        worksheet.cell(row=row_idx, column=url_idx, value=paper_url)
+        workbook.save("/Users/Kyungho/Desktop/PaperScraper/temp.xlsx")
+
 
 def search_list_by_clicking():
     #전체 페이퍼 항목들을 보여줌

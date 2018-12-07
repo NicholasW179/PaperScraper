@@ -8,8 +8,8 @@ from openpyxl import load_workbook
 
 #For OSX
 driver = webdriver.Chrome('/usr/local/bin/chromedriver')
-
 #driver = webdriver.Chrome('C:/Users/kpark/AppData/Local/Programs/Python/chromedriver.exe')
+
 driver.get('http://www.riss.kr/index.do')
 
 #검색어는 지정주어야 함
@@ -115,7 +115,7 @@ def scrap_academy():
 def paperwork_riss():
     handler = driver.window_handles
 
-    for i in range(0,3): #팝업창 개수(n) + 1만큼 range(0,n+1)돌려줘야 함
+    for i in range(0,2): #팝업창 개수(n) + 1만큼 range(0,n+1)돌려줘야 함
         try:
             driver.switch_to_window(handler[i])
             query_input = driver.find_element_by_xpath("//input[@id='basicQuery']")
@@ -126,10 +126,7 @@ def paperwork_riss():
 
     driver.switch_to_window(handler[0])
 
-    driver.maximize_window()
-
     # Input of Keywords & Search
-    sleep(2)
     query = "우버"
     query_input.send_keys(query)
     search_btn = driver.find_element_by_xpath("//input[@src='/main/images/sc_btn.gif']")
@@ -146,9 +143,7 @@ def paperwork_riss():
     sleep(1)
 
 
-
 def scrap_paperwork():
-    
     title_candidates = driver.find_elements_by_xpath("//p[@class='txt']") #전체 돌아가는 숫자를 정의하기 위해
     url_checkpoint = driver.current_url #검색결과 화면을 체크
      
@@ -156,12 +151,12 @@ def scrap_paperwork():
 
     for element in range(0,len(title_candidates)):
 
-        print(element)
+        print("New Paper!")
         sleep(3)
         graduate_paper_list = driver.find_elements_by_xpath("//p[@class='txt']/a")
 
-        graduate_paper_list[element].click() #for문 돌려서 바꿔주어야 함
-
+        graduate_paper_list[element].click()
+        
         #Title
         title_temp = driver.find_element_by_xpath("//div[@class='vTop02']")
         paper_title = title_temp.text
@@ -189,7 +184,6 @@ def scrap_paperwork():
         print(paper_year)
         print(paper_url)
 
-        print(element)
         driver.get(url_checkpoint)
         sleep(1)
     

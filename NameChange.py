@@ -6,6 +6,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from openpyxl import load_workbook
 
+'''
+논문 검색 시 국문으로 된 저자의 이름을 영문으로 바꾸어주는 스크립트
+'''
 
 #For OSX
 driver = webdriver.Chrome('/usr/local/bin/chromedriver')
@@ -37,8 +40,8 @@ for row_idx in range(1,188):
     txt_result = result.text
     txt_list = txt_result.split()
     final_result = txt_list[1] + ' ' + txt_list[0]
-    print(type(final_result))
-    print(final_result)
+    #print(type(final_result))
+    #print(final_result)
 
     eg_name = worksheet.cell(row=row_idx, column=2, value=final_result)
 

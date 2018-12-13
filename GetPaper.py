@@ -6,6 +6,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from openpyxl import load_workbook
 
+'''
+RISS 통합검색 사이트에서 (1)학위논문 (2)학술지 논문 범위를 대상으로
+입력한 쿼리를 포함한 모든 학술논문의 이름, 저자, 연도, 발행처를 긁어오는
+자동화 스크립트
+'''
+
 #For OSX
 driver = webdriver.Chrome('/usr/local/bin/chromedriver')
 #driver = webdriver.Chrome('C:/Users/kpark/AppData/Local/Programs/Python/chromedriver.exe')
@@ -142,7 +148,6 @@ def paperwork_riss():
 
     sleep(1)
 
-
 def scrap_paperwork():
     title_candidates = driver.find_elements_by_xpath("//p[@class='txt']") #전체 돌아가는 숫자를 정의하기 위해
     url_checkpoint = driver.current_url #검색결과 화면을 체크
@@ -210,7 +215,7 @@ def scrap_paperwork():
         worksheet.cell(row=row_idx, column=url_idx, value=paper_url)
         workbook.save("/Users/Kyungho/Desktop/PaperScraper/temp.xlsx")
 
-
+#testing codes
 def search_list_by_clicking():
     #전체 페이퍼 항목들을 보여줌
     graduate_paper_list = driver.find_elements_by_xpath("//p[@class='txt']")
@@ -267,8 +272,8 @@ def test_excel():
     row_idx = row_idx + 1
 
 
+
 #academy_riss()
 #scrap_academy()
-
-paperwork_riss()
-scrap_paperwork()
+#paperwork_riss()
+#scrap_paperwork()
